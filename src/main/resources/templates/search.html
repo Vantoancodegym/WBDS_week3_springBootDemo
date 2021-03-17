@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="/homeJs.js"></script>
+
+</head>
+<body>
+<div class="container">
+    <div class="row col-md-6 col-md-offset-2 custyle">
+        <form method="post" action="/products/search" >
+            <select name="category_id">
+                <th:block th:each="c:${categories}">
+                    <option th:value="${c.id}" th:text="${c.name}"></option>
+                </th:block>
+            </select>
+            <button type="submit">Search</button>
+
+        </form>
+        <input id="productName" placeholder="input product name"><br>
+        <input id="productBrand" placeholder="input product brand"><br>
+        <select id="productCategory">
+            <th:block th:each="c: ${categories}">
+                <option th:value="${c.id}" th:text="${c.name}"></option>
+            </th:block>
+        </select><br>
+        <button onclick="createProduct()" class="btn btn-primary btn-xs pull-right"><b>+</b> Add new product</button>
+        <table class="table table-striped custab" id="tableList">
+            <tr>
+                <th>Name</th>
+                <th>Brand</th>
+                <th>Category</th>
+                <th class="text-center">Action</th>
+            </tr>
+
+            <th:block th:each="p: ${productList}">
+                <tr>
+                    <td th:text="${p.name}"></td>
+                    <td th:text="${p.brand}"></td>
+                    <td th:text="${p.category.getName()}"></td>
+
+                    <td class="text-center"><a class='btn btn-info btn-xs' th:href="@{/products/edit(id=${p.getId()})}" ><span class="glyphicon glyphicon-edit"></span> Edit</a>
+                        <button onclick="deleteProduct($(this))" th:value="${p.getId()}"  class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Del</button></td>
+                </tr>
+            </th:block>
+        </table>
+    </div>
+</div>
+</body>
+</html>
